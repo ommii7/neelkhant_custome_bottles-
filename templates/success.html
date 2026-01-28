@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="premium-card p-5 text-center">
+                <h4 style="background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-color: #FFFFFF; padding: 10px; font-size: 24px; font-weight: 800; text-align: center;">
+  Sai Neelkanth Private Limited
+</h4>
+                <div class="display-1 text-success mb-3">✓</div>
+                <h2 class="heading-font text-uppercase">Order Confirmed</h2>
+                <p class="text-muted">Thank you, {{ order.contact_person }} <br>for placing your order related information<br> Our team will contact you soon.</p>
+                <hr class="my-4">
+                
+                <div class="bg-light p-4 rounded text-start">
+                    <h5 class="fw-bold mb-3">Order Summary</h5>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Item</span>
+                        <span>{{ order.bottle_size }} Bottle</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Quantity</span>
+                        <span>{{ order.quantity }} units</span>
+                    </div>
+                    <div class="d-flex justify-content-between mt-3 pt-3 border-top">
+                        <span class="h5 fw-bold">Total Bill</span>
+                        <span class="h5 fw-bold text-success">₹{{ order.total_amount }}</span>
+                    </div>
+                </div>
+
+                <a href="/order" class="btn btn-outline-dark mt-4">Place Another Order</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

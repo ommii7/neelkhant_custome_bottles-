@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+    
+    <div class="row mb-5">
+       <style>
+    .gold-card {
+        background: linear-gradient(145deg, #ffffff, #fffdf5); /* Creamy White */
+        border: 2px solid #d4af37;           /* Gold Border */
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2); /* Soft Shadow */
+        transition: all 0.3s ease;           /* Smooth Animation */
+        cursor: default;
+    }
+
+    /* HOVER EFFECT: Jab mouse upar jayega */
+    .gold-card:hover {
+        transform: translateY(-5px);         /* Thoda upar uthega */
+        box-shadow: 0 15px 35px rgba(212, 175, 55, 0.4); /* Shadow badh jayegi */
+        border-color: #b8860b;               /* Border thoda dark hoga */
+    }
+</style>
+
+<div class="col-md-4">
+    <div class="gold-card">
+        
+        <h6 style="color: #0a192f; font-family: 'Lato', sans-serif; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; font-size: 0.9rem;">
+            Total Revenue
+        </h6>
+
+        <h2 style="color: #d4af37; font-family: 'Arial', sans-serif; font-weight: 700; font-size: 3rem; margin: 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">
+            ₹{{ total_revenue }}
+        </h2>
+
+    </div>
+</div>
+ 
+        <div class="col-md-8">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+        <li class="nav-item">
+            <button class="nav-link active fw-bold text-dark" id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button">🚨 Active Orders</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link fw-bold text-muted" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button">📜 Order History</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="adminTabsContent">
+        
+        <div class="tab-pane fade show active" id="active">
+            <div class="premium-card p-4">
+                <h4 class="heading-font mb-4 text-warning">Pending Actions</h4>
+                <div class="table-responsive">
+                    <table class="table align-middle table-hover">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Date</th>
+                                <th>Customer Details</th>
+                                <th>Order Info</th>
+                                <th>Bill Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in active_orders %}
+                            <tr>
+                                <td class="text-muted small">{{ order.order_date.strftime('%d-%m') }}</td>
+                                
+                                <td>
+                                    <div class="fw-bold text-dark">{{ order.hotel_name }}</div>
+                                    <div class="small text-muted">CP: {{ order.contact_person }}</div>
+                                    <div class="small text-primary">📞 {{ order.phone }}</div>
+                                </td>
+                                
+                                <td>
+                                    <span class="badge bg-light text-dark border">{{ order.bottle_size }}</span>
+                                    <div class="small mt-1">{{ order.quantity }} units</div>
+                                </td>
+                                
+                                <td class="fw-bold gold-text">₹{{ order.total_amount }}</td>
+                                
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a href="{{ url_for('download_bill', order_id=order.id) }}" class="btn btn-sm btn-outline-dark" title="View Bill">📄</a>
+                                        
+                                        <a href="{{ url_for('mark_complete', order_id=order.id) }}" class="btn btn-sm btn-success fw-bold" title="Complete Order">✓</a>
+                                        
+                                        <a href="{{ url_for('delete_order', order_id=order.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this order permanently?');" title="Delete Order">
+                                            🗑️
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr><td colspan="5" class="text-center py-5 text-muted">No pending orders found.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="history">
+            <div class="premium-card p-4">
+                <h4 class="heading-font mb-4 text-success">Completed Orders</h4>
+                <div class="table-responsive">
+                    <table class="table align-middle text-muted">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Date</th>
+                                <th>Hotel Name</th>
+                                <th>Total Bill</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in history_orders %}
+                            <tr>
+                                <td>{{ order.order_date.strftime('%d-%m-%Y') }}</td>
+                                <td>
+                                    <span class="fw-bold text-dark">{{ order.hotel_name }}</span>
+                                    <div class="small">{{ order.phone }}</div>
+                                </td>
+                                <td class="gold-text fw-bold">₹{{ order.total_amount }}</td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a href="{{ url_for('download_bill', order_id=order.id) }}" class="btn btn-sm btn-outline-secondary">⬇ PDF</a>
+                                        
+                                        <a href="{{ url_for('delete_order', order_id=order.id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this record from history?');">
+                                            🗑️
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

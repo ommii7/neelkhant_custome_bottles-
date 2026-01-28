@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="heading-font">Place Bulk Inquiry</h2>
+        <p class="text-muted">Select your preferred packaging size</p>
+    </div>
+
+    <form action="/place_order" method="POST">
+        <div class="row justify-content-center">
+            
+            <div class="col-md-10 mb-5">
+                <div class="row g-4 justify-content-center">
+                    
+                    <div class="col-md-3">
+                        <input type="radio" name="bottle_size" value="200ml" id="s1" class="btn-check" required>
+                        <label class="premium-card p-4 w-100 text-center d-block position-relative" for="s1" style="cursor: pointer; border: 2px solid transparent;">
+                            <h4 class="fw-bold mb-1">200ml</h4>
+                            <div class="badge bg-dark text-warning mb-2">₹6 / unit</div>
+                            <p class="small text-muted mb-0">Event Size</p>
+                        </label>
+                    </div>
+
+                    <div class="col-md-3">
+                        <input type="radio" name="bottle_size" value="500ml" id="s2" class="btn-check">
+                        <label class="premium-card p-4 w-100 text-center d-block position-relative" for="s2" style="cursor: pointer; border: 2px solid transparent;">
+                            <h4 class="fw-bold mb-1">500ml</h4>
+                            <div class="badge bg-dark text-warning mb-2">₹8 / unit</div>
+                            <p class="small text-muted mb-0">Standard Size</p>
+                        </label>
+                    </div>
+
+                    <div class="col-md-3">
+                        <input type="radio" name="bottle_size" value="1 Litre" id="s3" class="btn-check">
+                        <label class="premium-card p-4 w-100 text-center d-block position-relative" for="s3" style="cursor: pointer; border: 2px solid transparent;">
+                            <h4 class="fw-bold mb-1">1 Litre</h4>
+                            <div class="badge bg-dark text-warning mb-2">₹10 / unit</div>
+                            <p class="small text-muted mb-0">Premium Bottle</p>
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="premium-card p-5">
+                    <h4 class="heading-font text-center mb-4">Hotel Details</h4>
+                    <div class="row g-4">
+                        <div class="col-md-6"><label class="small fw-bold text-muted">HOTEL NAME</label><input type="text" name="hotel_name"  class="form-control" required></div>
+                        <div class="col-md-6"><label class="small fw-bold text-muted">ADDRESS</label><input type="text" name="contact_name"  class="form-control" required></div>
+                        <div class="col-md-6"><label class="small fw-bold text-muted">PHONE NUMBER</label><input type="text" name="phone"  class="form-control" required></div>
+                        <div class="col-md-6"><label class="small fw-bold text-muted">QUANTITY</label><input type="number" name="quantity"  class="form-control" required></div>
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-gold w-100 py-3">CONFIRM ORDER & GENERATE BILL</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    .btn-check:checked + label { border-color: var(--gold) !important; background-color: #fffbf0; }
+</style>
+{% endblock %}

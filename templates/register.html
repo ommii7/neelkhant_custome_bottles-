@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row justify-content-center align-items-center" style="min-height: 85vh;">
+    
+    <div class="col-12 col-md-8 col-lg-5">
+        
+        <div class="content-box"> <div class="text-center mb-4">
+                <h2 style="font-family: 'Playfair Display', serif; font-weight: 700; color: #0a192f; margin-bottom: 5px;">
+                    Partner Registration
+                </h2>
+                <p class="text-muted small">Create your business account</p>
+                <div style="width: 50px; height: 3px; background: #d4af37; margin: 5px auto;"></div>
+            </div>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for msg in messages %}
+                        <div class="alert alert-warning py-2 text-center small mb-3" role="alert">
+                            {{ msg }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="">
+                
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-muted mb-1">HOTEL / BUSINESS NAME</label>
+                    <input type="text" name="hotel_name" class="form-control" placeholder="Ex: Hotel Grand Palace" required>
+                </div>
+
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <label class="form-label small fw-bold text-muted mb-1">OWNER NAME</label>
+                        <input type="text" name="owner_name" class="form-control" placeholder="Full Name" required>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small fw-bold text-muted mb-1">PHONE</label>
+                        <input type="tel" name="phone" class="form-control" placeholder="Mobile No." pattern="[0-9]{10}" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-muted mb-1">BUSINESS EMAIL</label>
+                    <input type="email" name="email" class="form-control" placeholder="name@hotel.com" required>
+                </div>
+
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <label class="form-label small fw-bold text-muted mb-1">PASSWORD</label>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Create" required>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small fw-bold text-muted mb-1">CONFIRM</label>
+                        <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Repeat" required>
+                    </div>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="terms" required>
+                    <label class="form-check-label small text-muted" for="terms" style="font-size: 0.8rem;">
+                        I agree to the Terms & Conditions.
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-gold shadow-sm">
+                    REGISTER NOW
+                </button>
+            </form>
+
+            <div class="text-center mt-3">
+                <p class="text-muted small mb-0">
+                    Already a partner? 
+                    <a href="/login" style="color: #d4af37; font-weight: 700; text-decoration: none;">Login Here</a>
+                </p>
+            </div>
+
+        </div> </div>
+</div>
+
+<script>
+    document.querySelector("form").addEventListener("submit", function(e){
+        var pass = document.getElementById("password").value;
+        var conf = document.getElementById("confirm_password").value;
+        if(pass != conf) {
+            e.preventDefault();
+            alert("Password and Confirm Password must match!");
+        }
+    });
+</script>
+
+{% endblock %}

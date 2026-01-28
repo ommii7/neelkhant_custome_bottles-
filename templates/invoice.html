@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tax Invoice</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 1.5cm;
+        }
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            font-size: 13px;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        /* --- HEADER SECTION --- */
+        .header-table {
+            width: 100%;
+            border-bottom: 2px solid #0a192f;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .brand-name {
+            font-size: 26px;
+            font-weight: bold;
+            color: #0a192f; /* Royal Blue */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .tagline {
+            font-size: 10px;
+            color: #d4af37; /* Gold */
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+        .company-info {
+            text-align: right;
+            font-size: 10px;
+            color: #555;
+        }
+
+        /* --- CLIENT & INVOICE INFO --- */
+        .details-table {
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        .section-label {
+            font-size: 9px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        .client-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #000;
+        }
+        .invoice-details {
+            text-align: right;
+        }
+        .invoice-number {
+            font-size: 14px;
+            font-weight: bold;
+            color: #0a192f;
+        }
+
+        /* --- ORDER TABLE --- */
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .order-table th {
+            background-color: #f8f9fa;
+            color: #0a192f;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: left;
+            padding: 10px;
+            border-bottom: 2px solid #d4af37;
+        }
+        .order-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #eee;
+            color: #444;
+        }
+        /* Right align amounts */
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+
+        /* --- TOTALS SECTION --- */
+        .total-table {
+            width: 40%;
+            margin-left: auto;
+            border-collapse: collapse;
+        }
+        .total-table td {
+            padding: 5px 10px;
+            text-align: right;
+        }
+        .grand-total-row td {
+            border-top: 2px solid #0a192f;
+            padding-top: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #0a192f;
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 9px;
+            color: #999;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            background: linear-gradient(45deg, #b8860b, #d4af37, #f3e5ae);
+            -webkit-background-clip: text;  
+            -webkit-text-fill-color: transparent;
+            text-emphasis-color: inherit;
+            text-decoration-color: #d4af37;
+
+        }
+    </style>
+</head>
+<body>
+
+    <table class="header-table">
+        <tr>
+            <td>
+                <div class="brand-name">Sai Neelkhant</div>
+                <div class="tagline">Premium Custom Water Bottle Private Limited</div>
+            </td>
+            <td>
+                <div class="company-info">
+                    <strong>Sai Neelkhant Water Supply</strong><br>
+                    near ganpati mandir<br>
+                    sanjay nager jeur kumbhari<br>
+                    Maharashtra, India - 423601<br>
+                    +91 98901 97075 | saineelkhant01@gmail.com
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table class="details-table">
+        <tr>
+            <td width="60%" valign="top">
+                <div class="section-label">Billed To</div>
+                <div class="client-name">{{ order.hotel_name }}</div>
+                <div>Attn: {{ order.contact_person }}</div>
+                <div>{{ order.phone }}</div>
+                <div>{{ order.email }}</div>
+            </td>
+            <td width="40%" valign="top" class="invoice-details">
+                <div class="section-label">Invoice Details</div>
+                <div class="invoice-number">#INV-{{ order.id }}</div>
+                <div>Date: {{ date }}</div>
+                <div>Status: <span style="color: green; font-weight:bold;">Paid</span></div>
+            </td>
+        </tr>
+    </table>
+
+    <table class="order-table">
+        <thead>
+            <tr>
+                <th width="50%">Description</th>
+                <th width="15%" class="text-center">Qty</th>
+                <th width="15%" class="text-right">Rate</th>
+                <th width="20%" class="text-right">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <strong>{{ order.bottle_size }} Premium Water Bottle</strong><br>
+                    <span style="font-size: 11px; color: #888;">Custom Branding & Packaging</span>
+                </td>
+                <td class="text-center">{{ order.quantity }}</td>
+                <td class="text-right">{{ "%.2f"|format(rate) }}</td>
+                <td class="text-right">{{ "%.2f"|format(order.total_amount) }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="total-table">
+        <tr>
+            <td style="color: #666;">Subtotal</td>
+            <td>{{ "%.2f"|format(order.total_amount) }}</td>
+        </tr>
+        <tr>
+            <td style="color: #666;">Tax (0%)</td>
+            <td>0.00</td>
+        </tr>
+        <tr class="grand-total-row">
+            <td>Total (INR)</td>
+            <td>Rs. {{ "%.2f"|format(order.total_amount) }}</td>
+        </tr>
+    </table>
+
+    <div class="footer">
+        Thank you for your business. Please ensure payment is made within due date.<br>
+        For any queries, contact saineelkhant01@gmail.com. This is a computer-generated invoice.
+    </div>
+
+</body>
+</html>
